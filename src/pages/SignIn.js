@@ -32,19 +32,21 @@ const SignIn = () => {
 
             const result = await res.json();
 
-            if (result.success) {
-                toast.success(result.message || 'Login successful!', { transition: Slide, autoClose: 3000 });
+            console.log(result);
+            
+            // if (result.success) {
+            //     toast.success(result.message || 'Login successful!', { transition: Slide, autoClose: 3000 });
 
-                // fetch user details & cart
-                const user = await fetchUserDetails(true);
-                fetchUserAddToCart?.();
+            //     // fetch user details & cart
+            //     const user = await fetchUserDetails(true);
+            //     fetchUserAddToCart?.();
 
-                // Redirect theo role
-                if (user?.role === 'ADMIN') navigate('/admin-panel/all-products');
-                else navigate('/');
-            } else {
-                toast.error(result.message || 'Login failed', { transition: Slide, autoClose: 3000 });
-            }
+            //     // Redirect theo role
+            //     if (user?.role === 'ADMIN') navigate('/admin-panel/all-products');
+            //     else navigate('/');
+            // } else {
+            //     toast.error(result.message || 'Login failed', { transition: Slide, autoClose: 3000 });
+            // }
         } catch (err) {
             console.error(err);
             toast.error('Something went wrong!', { transition: Slide, autoClose: 3000 });
