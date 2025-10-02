@@ -4,6 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast, Slide } from 'react-toastify';
 import SummaryApi from '../common';
 import Context from '../context';
+
+import cookie from 'js-cookie';
+
 const SignIn = () => {
     const navigate = useNavigate();
     const { fetchUserDetails, fetchUserAddToCart } = useContext(Context);
@@ -33,20 +36,25 @@ const SignIn = () => {
             const result = await res.json();
 
             console.log(result);
-            
-            // if (result.success) {
-            //     toast.success(result.message || 'Login successful!', { transition: Slide, autoClose: 3000 });
 
-            //     // fetch user details & cart
-            //     const user = await fetchUserDetails(true);
-            //     fetchUserAddToCart?.();
+            if (result.success) {
+                toast.success(result.message || 'Login successful!', { transition: Slide, autoClose: 3000 });
+                cookie.set('token', result.data, {
+                    path: '/',
+                    secure: false,
+                    sameSite: 'Lax',
+                    expires: new Date(Date.now() + 8 * 60 * 60 * 1000),
+                });
+                // fetch user details & cart
+                const user = await fetchUserDetails(true);
+                fetchUserAddToCart?.();
 
-            //     // Redirect theo role
-            //     if (user?.role === 'ADMIN') navigate('/admin-panel/all-products');
-            //     else navigate('/');
-            // } else {
-            //     toast.error(result.message || 'Login failed', { transition: Slide, autoClose: 3000 });
-            // }
+                // Redirect theo role
+                if (user?.role === 'ADMIN') navigate('/admin-panel/all-products');
+                else navigate('/');
+            } else {
+                toast.error(result.message || 'Login failed', { transition: Slide, autoClose: 3000 });
+            }
         } catch (err) {
             console.error(err);
             toast.error('Something went wrong!', { transition: Slide, autoClose: 3000 });
