@@ -82,7 +82,7 @@ const Cart = () => {
         try {
             const cartIds = data.map((item) => item._id); // _id trong collection cartProduct
 
-            const res = await fetch('http://localhost:5000/api/checkout', {
+            const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/checkout`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
